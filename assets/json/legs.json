@@ -1,0 +1,566 @@
+[
+    {
+        "leg_num": 0,
+        "dist": 4.2,
+        "climb_total": 981,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2156,
+                "end_dist": 4.2,
+                "end_elev": 2877
+            }
+        ]
+    },
+    {
+        "leg_num": 1,
+        "dist": 9.8,
+        "climb_total": 1577,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2877,
+                "end_dist": 1.8,
+                "end_elev": 3763
+            },
+            {
+                "start_dist": 1.8,
+                "start_elev": 2877,
+                "end_dist": 6.5,
+                "end_elev": 2250
+            },
+            {
+                "start_dist": 6.5,
+                "start_elev": 2250,
+                "end_dist": 9.8,
+                "end_elev": 2129
+            }
+        ]
+    },
+    {
+        "leg_num": 2,
+        "dist": 5.5,
+        "climb_total": 402,
+        "difficulty": 0,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2129,
+                "end_dist": 5.5,
+                "end_elev": 2025
+            }
+        ]
+    },
+    {
+        "leg_num": 3,
+        "dist": 5.4,
+        "climb_total": 735,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2025,
+                "end_dist": 5.4,
+                "end_elev": 2200
+            }
+        ]
+    },
+    {
+        "leg_num": 4,
+        "dist": 4,
+        "climb_total": 356,
+        "difficulty": 0,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2200,
+                "end_dist": 4,
+                "end_elev": 2076
+            }
+        ]
+    },
+    {
+        "leg_num": 5,
+        "dist": 4.3,
+        "climb_total": 438,
+        "difficulty": 0,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2076,
+                "end_dist": 4.3,
+                "end_elev": 2252
+            }
+        ]
+    },
+    {
+        "leg_num": 6,
+        "dist": 7.8,
+        "climb_total": 2599,
+        "difficulty": 5,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2251,
+                "end_dist": 1.25,
+                "end_elev": 2450
+            },
+            {
+                "start_dist": 1.25,
+                "start_elev": 2450,
+                "end_dist": 3.4,
+                "end_elev": 3810
+            },
+            {
+                "start_dist": 3.4,
+                "start_elev": 3810,
+                "end_dist": 7.8,
+                "end_elev": 2397
+            }
+        ]
+    },
+    {
+        "leg_num": 7,
+        "dist": 3.4,
+        "climb_total": 709,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2397,
+                "end_dist": 0.5,
+                "end_elev": 2370
+            },
+            {
+                "start_dist": 0.5,
+                "start_elev": 2300,
+                "end_dist": 1.1,
+                "end_elev": 2700
+            },
+            {
+                "start_dist": 1.1,
+                "start_elev": 2700,
+                "end_dist": 1.75,
+                "end_elev": 2358
+            },
+            {
+                "start_dist": 1.75,
+                "start_elev": 2358,
+                "end_dist": 3.4,
+                "end_elev": 2676
+            }
+        ]
+    },
+    {
+        "leg_num": 8,
+        "dist": 3.4,
+        "climb_total": 95,
+        "difficulty": 0,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2676,
+                "end_dist": 0.15,
+                "end_elev": 2683
+            },
+            {
+                "start_dist": 0.15,
+                "start_elev": 2683,
+                "end_dist": 3.4,
+                "end_elev": 2188
+            }
+        ]
+    },
+    {
+        "leg_num": 9,
+        "dist": 4.1,
+        "climb_total": 484,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2188,
+                "end_dist": 4.1,
+                "end_elev": 2285
+            }
+        ]
+    },
+    {
+        "leg_num": 10,
+        "dist": 5.8,
+        "climb_total": 2057,
+        "difficulty": 5,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2285,
+                "end_dist": 2.5,
+                "end_elev": 2600
+            },
+            {
+                "start_dist": 2.5,
+                "start_elev": 2600,
+                "end_dist": 5.8,
+                "end_elev": 4155
+            }
+        ]
+    },
+    {
+        "leg_num": 11,
+        "dist": 4.2,
+        "climb_total": 1050,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 4155,
+                "end_dist": 1.5,
+                "end_elev": 3804
+            },
+            {
+                "start_dist": 1.5,
+                "start_elev": 3804,
+                "end_dist": 4.2,
+                "end_elev": 4501
+            }
+        ]
+    },
+    {
+        "leg_num": 12,
+        "dist": 4.3,
+        "climb_total": 1071,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 4501,
+                "end_dist": 0.5,
+                "end_elev": 4507
+            },
+            {
+                "start_dist": 0.5,
+                "start_elev": 4507,
+                "end_dist": 2.1,
+                "end_elev": 3941
+            },
+            {
+                "start_dist": 2.1,
+                "start_elev": 2676,
+                "end_dist": 4.3,
+                "end_elev": 4406
+            }
+        ]
+    },
+    {
+        "leg_num": 13,
+        "dist": 8.7,
+        "climb_total": 1459,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 4406,
+                "end_dist": 1.1,
+                "end_elev": 4726
+            },
+            {
+                "start_dist": 1.1,
+                "start_elev": 4726,
+                "end_dist": 8.7,
+                "end_elev": 3203
+            }
+        ]
+    },
+    {
+        "leg_num": 14,
+        "dist": 6.3,
+        "climb_total": 1076,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 3203,
+                "end_dist": 1.2,
+                "end_elev": 3509
+            },
+            {
+                "start_dist": 1.2,
+                "start_elev": 3509,
+                "end_dist": 4,
+                "end_elev": 2630
+            },
+            {
+                "start_dist": 4,
+                "start_elev": 2630,
+                "end_dist": 6.3,
+                "end_elev": 3007
+            }
+        ]
+    },
+    {
+        "leg_num": 15,
+        "dist": 6.7,
+        "climb_total": 1442,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 3007,
+                "end_dist": 0.25,
+                "end_elev": 3200
+            },
+            {
+                "start_dist": 0.25,
+                "start_elev": 3200,
+                "end_dist": 0.4,
+                "end_elev": 3000
+            },
+            {
+                "start_dist": 0.4,
+                "start_elev": 3000,
+                "end_dist": 2.75,
+                "end_elev": 3877
+            },
+            {
+                "start_dist": 2.75,
+                "start_elev": 3877,
+                "end_dist": 6.7,
+                "end_elev": 2296
+            }
+        ]
+    },
+    {
+        "leg_num": 16,
+        "dist": 5.6,
+        "climb_total": 628,
+        "difficulty": 0,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2296,
+                "end_dist": 5.6,
+                "end_elev": 1994
+            }
+        ]
+    },
+    {
+        "leg_num": 17,
+        "dist": 6.9,
+        "climb_total": 1086,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 1994,
+                "end_dist": 0.75,
+                "end_elev": 2000
+            },
+            {
+                "start_dist": 0.75,
+                "start_elev": 2000,
+                "end_dist": 1.6,
+                "end_elev": 2433
+            },
+            {
+                "start_dist": 1.6,
+                "start_elev": 2433,
+                "end_dist": 2.15,
+                "end_elev": 2050
+            },
+            {
+                "start_dist": 2.15,
+                "start_elev": 2050,
+                "end_dist": 6.9,
+                "end_elev": 2015
+            }
+        ]
+    },
+    {
+        "leg_num": 18,
+        "dist": 7.7,
+        "climb_total": 709,
+        "difficulty": 3,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2015,
+                "end_dist": 7.7,
+                "end_elev": 2054
+            }
+        ]
+    },
+    {
+        "leg_num": 19,
+        "dist": 5.9,
+        "climb_total": 593,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2054,
+                "end_dist": 5.9,
+                "end_elev": 1949
+            }
+        ]
+    },
+    {
+        "leg_num": 20,
+        "dist": 4.7,
+        "climb_total": 573,
+        "difficulty": 1,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 1949,
+                "end_dist": 0.25,
+                "end_elev": 2000
+            },
+            {
+                "start_dist": 0.25,
+                "start_elev": 2000,
+                "end_dist": 0.5,
+                "end_elev": 1950
+            },
+            {
+                "start_dist": 0.5,
+                "start_elev": 1950,
+                "end_dist": 3.75,
+                "end_elev": 1812
+            },
+            {
+                "start_dist": 3.75,
+                "start_elev": 1812,
+                "end_dist": 4.4,
+                "end_elev": 2011
+            },
+            {
+                "start_dist": 4.4,
+                "start_elev": 2011,
+                "end_dist": 4.7,
+                "end_elev": 1914
+            }
+        ]
+    },
+    {
+        "leg_num": 21,
+        "dist": 6.6,
+        "climb_total": 1800,
+        "difficulty": 4,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 1914,
+                "end_dist": 1.6,
+                "end_elev": 1880
+            },
+            {
+                "start_dist": 1.6,
+                "start_elev": 1880,
+                "end_dist": 2.3,
+                "end_elev": 2100
+            },
+            {
+                "start_dist": 2.3,
+                "start_elev": 2100,
+                "end_dist": 3,
+                "end_elev": 1900
+            },
+            {
+                "start_dist": 3,
+                "start_elev": 1900,
+                "end_dist": 4,
+                "end_elev": 1712
+            },
+            {
+                "start_dist": 4,
+                "start_elev": 1712,
+                "end_dist": 4.5,
+                "end_elev": 2000
+            },
+            {
+                "start_dist": 4.5,
+                "start_elev": 2000,
+                "end_dist": 5.25,
+                "end_elev": 1950
+            },
+            {
+                "start_dist": 5.25,
+                "start_elev": 1950,
+                "end_dist": 6.35,
+                "end_elev": 2226
+            },
+            {
+                "start_dist": 6.35,
+                "start_elev": 2226,
+                "end_dist": 6.6,
+                "end_elev": 2085
+            }
+        ]
+    },
+    {
+        "leg_num": 22,
+        "dist": 3.3,
+        "climb_total": 596,
+        "difficulty": 0,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 2085,
+                "end_dist": 1.2,
+                "end_elev": 1708
+            },
+            {
+                "start_dist": 1.2,
+                "start_elev": 1708,
+                "end_dist": 3.3,
+                "end_elev": 1743
+            }
+        ]
+    },
+    {
+        "leg_num": 23,
+        "dist": 6,
+        "climb_total": 1820,
+        "difficulty": 3,
+        "portions": [
+            {
+                "start_dist": 0,
+                "start_elev": 1743,
+                "end_dist": 0.55,
+                "end_elev": 1970
+            },
+            {
+                "start_dist": 0.55,
+                "start_elev": 1970,
+                "end_dist": 1.55,
+                "end_elev": 1750
+            },
+            {
+                "start_dist": 1.55,
+                "start_elev": 1750,
+                "end_dist": 3.7,
+                "end_elev": 2460
+            },
+            {
+                "start_dist": 3.7,
+                "start_elev": 2460,
+                "end_dist": 4.5,
+                "end_elev": 2100
+            },
+            {
+                "start_dist": 4.5,
+                "start_elev": 2100,
+                "end_dist": 5.4,
+                "end_elev": 2050
+            },
+            {
+                "start_dist": 5.4,
+                "start_elev": 2050,
+                "end_dist": 6,
+                "end_elev": 1714
+            }
+        ]
+    }
+  ]
