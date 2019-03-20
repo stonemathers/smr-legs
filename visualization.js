@@ -2,13 +2,15 @@
 const BG_COLOR = "#87CEEB";
 
 //Ground constants
-const GROUND_HEIGHT = 600;
+let ground_height;
+const GROUND_BUFF = 200;
+const MIN_GROUND_HEIGHT = 500;
 const GROUND_COLOR = "#9B7653";
 
 //Title constants
 const TITLE_FONT_SIZE = 40;
 const TITLE_Y = 50;
-const TITLE_MSG = "140-mile Smoky Leg Relay Legs"
+const TITLE_MSG = "140-mile Smoky Relay Legs"
 
 //Leg Color Pallette
 const EASIEST_COLOR = "#00B800";
@@ -20,9 +22,9 @@ let legs;
 let maxDifficulty = 0;
 
 //Leg constants
-const WIDTH_MULT = 100;
-const HEIGHT_MULT = 0.1;
-const SCROLL_SPEED = 10;
+const WIDTH_MULT = 200;
+const HEIGHT_MULT = 0.12;
+const SCROLL_SPEED = 20;
 const MOUNT_BUFFER = 300;
 
 //Leg label strings
@@ -36,11 +38,24 @@ const LABEL_HEIGHT_THRESH = 100;
 const ABOVE_TEXT_BUFF = 5;
 const LABEL_FONT_SIZE = 12;
 
+//Clouds
+let medCloudImg;
+let clouds = [];
+const CLOUD_Y_MAX = 300;
+const CLOUD_SPACING_MIN = 100;
+const CLOUD_SPACING_MAX = 300;
+const CLOUD_SIZE_DIV_FACTOR = 12;
+
+//Positioning
+let currentPixelPosition = 0;
+let totalPixelWidth;
+
 /*
 * Run once before site loads
 */
 function preload(){
     legData = loadJSON("assets/json/legs.json");
+    medCloudImg = loadImage("assets/images/cloud.png");
 }
 
 /*
@@ -49,6 +64,8 @@ function preload(){
 function setup(){
     createCanvas(windowWidth, windowHeight);
     initLegs();
+    initClouds();
+    ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
 }
 
 /*
@@ -57,7 +74,15 @@ function setup(){
 function draw(){
     //Draw Sky
     colorMode(RGB);
-    background(BG_COLOR);
+    let skyColor;
+    if(currentPixelPosition < totalPixelWidth / 3){
+        skyColor = lerpColor(color(BG_COLOR), color("#000"), currentPixelPosition/(totalPixelWidth / 3));
+    }else if(currentPixelPosition > totalPixelWidth * 2 / 3){
+        skyColor = lerpColor(color("#000"), color(BG_COLOR), (currentPixelPosition - totalPixelWidth * 2 / 3)/(totalPixelWidth / 3));
+    }else{
+        skyColor = color("#000");
+    }
+    background(skyColor);
 
     //Draw Title
     fill("black");
@@ -65,16 +90,29 @@ function draw(){
     textSize(TITLE_FONT_SIZE);
     text(TITLE_MSG, windowWidth/2, TITLE_Y);
 
-    //Move Legs
+    //Move Legs and Clouds
     if(keyIsDown(LEFT_ARROW) && legs[0].x < MOUNT_BUFFER){
         for(let i = 0; i < legs.length; i++){
             legs[i].move(SCROLL_SPEED);
         }
+        for(let i = 0; i < clouds.length; i++){
+            clouds[i].move(SCROLL_SPEED);
+        }
+        currentPixelPosition -= SCROLL_SPEED;
     }else if(keyIsDown(RIGHT_ARROW) &&
         (legs[legs.length - 1].x + legs[legs.length - 1].legWidth) > (width - MOUNT_BUFFER)){
         for(let i = 0; i < legs.length; i++){
             legs[i].move(-SCROLL_SPEED);
         }
+        for(let i = 0; i < clouds.length; i++){
+            clouds[i].move(-SCROLL_SPEED);
+        }
+        currentPixelPosition += SCROLL_SPEED;
+    }
+
+    //Draw every other cloud - some end up in front of legs and some behind
+    for(let i = 0; i < clouds.length; i+=2){
+        clouds[i].display();
     }
 
     //Draw Legs
@@ -85,11 +123,16 @@ function draw(){
         }
     }
 
+    //Draw rest of clouds
+    for(let i = 1; i < clouds.length; i+=2){
+        clouds[i].display();
+    }
+
     //Draw Ground
     colorMode(RGB);
     fill(GROUND_COLOR);
     noTint();
-    rect(0, GROUND_HEIGHT, width, height - GROUND_HEIGHT);
+    rect(0, ground_height, width, height - ground_height);
 }
 
 /*
@@ -97,6 +140,7 @@ function draw(){
 */
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
 }
 
 /*
@@ -109,6 +153,10 @@ function mouseWheel(event){
         for(let i = 0; i < legs.length; i++){
             legs[i].move(-event.delta);
         }
+        for(let i = 0; i < clouds.length; i++){
+            clouds[i].move(-event.delta);
+        }
+        currentPixelPosition += event.delta;
     }
 
     //Prevent page scrolling
@@ -139,6 +187,19 @@ function initLegs(){
         //Update vars
         currX += legWidth;
         maxDifficulty = Math.max(maxDifficulty, diff);
+    }
+
+    //Set total pixel width of visualization
+    totalPixelWidth = currX + MOUNT_BUFFER;
+}
+
+function initClouds(){
+    //Initialize Clouds
+    let currX = 0;
+    while(currX < totalPixelWidth){
+        currX += random(CLOUD_SPACING_MIN, CLOUD_SPACING_MAX);
+        let y = random(0, CLOUD_Y_MAX);
+        clouds.push(new Cloud(medCloudImg, currX, y, medCloudImg.width / CLOUD_SIZE_DIV_FACTOR, medCloudImg.height / CLOUD_SIZE_DIV_FACTOR));
     }
 }
 
@@ -178,12 +239,12 @@ class Leg{
 
         //Draw shape
         beginShape();
-        vertex(this.x, GROUND_HEIGHT);  //bottom left
-        vertex(this.x, GROUND_HEIGHT - (this.portions[0].start_elev * HEIGHT_MULT));    //top left
+        vertex(this.x, ground_height);  //bottom left
+        vertex(this.x, ground_height - (this.portions[0].start_elev * HEIGHT_MULT));    //top left
         for(let i = 0; i < this.portions.length; i++){
-            vertex(this.x + this.portions[i].end_dist * WIDTH_MULT, GROUND_HEIGHT - (this.portions[i].end_elev * HEIGHT_MULT))   //top
+            vertex(this.x + this.portions[i].end_dist * WIDTH_MULT, ground_height - (this.portions[i].end_elev * HEIGHT_MULT))   //top
         }
-        vertex(this.x + this.legWidth, GROUND_HEIGHT); //bottom right
+        vertex(this.x + this.legWidth, ground_height); //bottom right
         endShape(CLOSE);
 
         //Draw label
@@ -213,10 +274,10 @@ class Leg{
 
         if(this.height < LABEL_HEIGHT_THRESH){
             textAlign(CENTER, BOTTOM);
-            infoY = GROUND_HEIGHT - this.height - ABOVE_TEXT_BUFF;
+            infoY = ground_height - this.height - ABOVE_TEXT_BUFF;
         }else{
             textAlign(CENTER, CENTER);
-            infoY = GROUND_HEIGHT - (this.height/3);
+            infoY = ground_height - (this.height/3);
         }
 
         //Draw text
@@ -249,7 +310,29 @@ class Leg{
     * Return true if mouse is over the Leg
     */
     mouseIsOver(){
-        return (mouseX >= this.x) && (mouseX <= this.x + this.legWidth) && (mouseY <= GROUND_HEIGHT) && (mouseY >= GROUND_HEIGHT - this.height);
+        return (mouseX >= this.x) && (mouseX <= this.x + this.legWidth) && (mouseY <= ground_height) && (mouseY >= ground_height - this.height);
     }
 
+}
+
+class Cloud{
+    constructor(img, x, y, width, height){
+        this.img = img;
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    display(){
+        image(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    move(dx){
+        this.x += dx;
+    }
+
+    stillDisplaying(){
+        return this.x > -this.width  && this.x < width;
+    }
 }

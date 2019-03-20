@@ -315,11 +315,11 @@
                 {
                     "start_dist": 0.25,
                     "start_elev": 3200,
-                    "end_dist": 0.4,
+                    "end_dist": 0.7,
                     "end_elev": 3000
                 },
                 {
-                    "start_dist": 0.4,
+                    "start_dist": 0.7,
                     "start_elev": 3000,
                     "end_dist": 2.75,
                     "end_elev": 3877
