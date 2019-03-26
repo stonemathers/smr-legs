@@ -1,5 +1,6 @@
 //Canvas constants
 const BG_COLOR = "#87CEEB";
+const TEXT_COLOR = "#152614";
 
 //Ground constants
 let ground_height;
@@ -27,16 +28,13 @@ const HEIGHT_MULT = 0.12;
 const SCROLL_SPEED = 20;
 let MOUNT_BUFFER;
 
-//Leg label strings
+//Leg Label
 const LEG_LABEL = "Leg #";
 const DIST_LABEL = "Distance: ";
 const MI_LABEL = " mi";
 const CLIMB_LABEL = "Total Climb: ";
-const FT_LABEL = " ft"
-const DIFF_LABEL = "Difficulty: "
-const LABEL_HEIGHT_THRESH = 100;
-const ABOVE_TEXT_BUFF = 5;
-const LABEL_FONT_SIZE = 12;
+const FT_LABEL = " ft";
+const LABEL_FONT_SIZE = 24;
 
 //Clouds
 let cloudImg;
@@ -248,14 +246,16 @@ function drawDifficultyGauge(){
     }
 
     //Draw labels
-    fill("black");
+    fill(TEXT_COLOR);
     textSize(GAUGE_TOP_FONT_SIZE);
     textAlign(CENTER, BOTTOM);
     text(DIFFICULTY_LABEL, GAUGE_X + (GAUGE_WIDTH / 2), barY - GAUGE_TOP_LABEL_BUFF);
     textSize(GAUGE_BOTTOM_FONT_SIZE);
-    textAlign(CENTER, TOP);
+    textAlign(LEFT, TOP);
     text(EASY_LABEL, GAUGE_X, barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
+    textAlign(CENTER, TOP);
     text(HARD_LABEL, GAUGE_X + (GAUGE_WIDTH / 2), barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
+    textAlign(RIGHT, TOP);
     text(OMG_LABEL, GAUGE_X + GAUGE_WIDTH, barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
 }
 
@@ -324,24 +324,16 @@ class Leg{
         //Create string
         let infoString = LEG_LABEL + str(num) + "\n"
             + DIST_LABEL + str(dist) + MI_LABEL + "\n"
-            + CLIMB_LABEL + str(this.climb_total) + FT_LABEL + "\n"
-            + DIFF_LABEL + str(this.difficulty);
+            + CLIMB_LABEL + str(this.climb_total) + FT_LABEL;
 
         //Calc position
         let infoX = this.x + (this.legWidth/2);
-        let infoY;
-
-        if(this.height < LABEL_HEIGHT_THRESH){
-            textAlign(CENTER, BOTTOM);
-            infoY = ground_height - this.height - ABOVE_TEXT_BUFF;
-        }else{
-            textAlign(CENTER, CENTER);
-            infoY = ground_height - (this.height/3);
-        }
+        let infoY = ground_height - (this.height/3);
 
         //Draw text
+            textAlign(CENTER, CENTER);
         textSize(LABEL_FONT_SIZE);
-        fill("black");
+        fill(TEXT_COLOR);
         text(infoString, infoX, infoY);
     }
 
