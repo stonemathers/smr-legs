@@ -131,7 +131,9 @@ function draw(){
 
     //Draw every other cloud - some end up in front of legs and some behind
     for(let i = 0; i < clouds.length; i+=2){
+        if(clouds[i].isOnScreen()){
         clouds[i].display();
+    }
     }
 
     //Draw Legs
@@ -144,7 +146,9 @@ function draw(){
 
     //Draw rest of clouds
     for(let i = 1; i < clouds.length; i+=2){
+        if(clouds[i].isOnScreen()){
         clouds[i].display();
+    }
     }
 
     //Draw Ground
@@ -385,7 +389,7 @@ class Cloud{
         this.x += dx;
     }
 
-    stillDisplaying(){
+    isOnScreen(){
         return this.x > -this.width  && this.x < width;
     }
 }
