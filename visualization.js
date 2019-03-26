@@ -3,7 +3,7 @@ const BG_COLOR = "#87CEEB";
 
 //Ground constants
 let ground_height;
-const GROUND_BUFF = 200;
+const GROUND_BUFF = 250;
 const MIN_GROUND_HEIGHT = 500;
 const GROUND_COLOR = "#9B7653";
 
@@ -39,7 +39,7 @@ const ABOVE_TEXT_BUFF = 5;
 const LABEL_FONT_SIZE = 12;
 
 //Clouds
-let medCloudImg;
+let cloudImg;
 let clouds = [];
 const CLOUD_Y_MAX = 300;
 const CLOUD_SPACING_MIN = 100;
@@ -50,12 +50,27 @@ const CLOUD_SIZE_DIV_FACTOR = 12;
 let currentPixelPosition = 0;
 let totalPixelWidth;
 
+//Difficuly Gauge
+const GAUGE_X = 50;
+const GAUGE_Y_BUFF = 115;
+const GAUGE_WIDTH = 300;
+const GAUGE_HEIGHT = 40;
+const GAUGE_TOP_FONT_SIZE = 24;
+const GAUGE_BOTTOM_FONT_SIZE = 20;
+const GAUGE_TOP_LABEL_BUFF = 4;
+const GAUGE_BOTTOM_LABEL_BUFF = 8;
+const DIFFICULTY_LABEL = "Difficulty";
+const EASY_LABEL = "Easy";
+const HARD_LABEL = "Hard";
+const OMG_LABEL = "OMG";
+
+
 /*
 * Run once before site loads
 */
 function preload(){
     legData = loadJSON("assets/json/legs.json");
-    medCloudImg = loadImage("assets/images/cloud.png");
+    cloudImg = loadImage("assets/images/cloud.png");
 }
 
 /*
@@ -75,20 +90,24 @@ function draw(){
     //Draw Sky
     colorMode(RGB);
     let skyColor;
-    if(currentPixelPosition < totalPixelWidth / 3){
-        skyColor = lerpColor(color(BG_COLOR), color("#000"), currentPixelPosition/(totalPixelWidth / 3));
+    if(currentPixelPosition < totalPixelWidth / 6){
+        skyColor = BG_COLOR;
+    }else if(currentPixelPosition < totalPixelWidth * 1 / 3){
+        skyColor = lerpColor(color(BG_COLOR), color("#000"), (currentPixelPosition - (totalPixelWidth / 6))/(totalPixelWidth / 6));
     }else if(currentPixelPosition > totalPixelWidth * 2 / 3){
         skyColor = lerpColor(color("#000"), color(BG_COLOR), (currentPixelPosition - totalPixelWidth * 2 / 3)/(totalPixelWidth / 3));
     }else{
-        skyColor = color("#000");
+        skyColor = "#000";
     }
     background(skyColor);
 
     //Draw Title
+    /*
     fill("black");
     textAlign(CENTER, TOP);
     textSize(TITLE_FONT_SIZE);
     text(TITLE_MSG, windowWidth/2, TITLE_Y);
+    */
 
     //Move Legs and Clouds
     if(keyIsDown(LEFT_ARROW) && legs[0].x < MOUNT_BUFFER){
@@ -133,6 +152,10 @@ function draw(){
     fill(GROUND_COLOR);
     noTint();
     rect(0, ground_height, width, height - ground_height);
+
+    //Draw Difficulty Gauge
+    colorMode(HSB);
+    drawDifficultyGauge();
 }
 
 /*
@@ -199,8 +222,35 @@ function initClouds(){
     while(currX < totalPixelWidth){
         currX += random(CLOUD_SPACING_MIN, CLOUD_SPACING_MAX);
         let y = random(0, CLOUD_Y_MAX);
-        clouds.push(new Cloud(medCloudImg, currX, y, medCloudImg.width / CLOUD_SIZE_DIV_FACTOR, medCloudImg.height / CLOUD_SIZE_DIV_FACTOR));
+        clouds.push(new Cloud(currX, y, cloudImg.width / CLOUD_SIZE_DIV_FACTOR, cloudImg.height / CLOUD_SIZE_DIV_FACTOR));
     }
+}
+
+function drawDifficultyGauge(){
+    let currX = GAUGE_X;
+    let barWidth = GAUGE_WIDTH / (maxDifficulty + 1);
+    let barY = ground_height + GAUGE_Y_BUFF;
+
+    for(let i = 0; i <= maxDifficulty; i++){
+        //Set color
+        let fillColor = lerpColor(color(EASIEST_COLOR), color(HARDEST_COLOR), i/maxDifficulty);
+        fill(fillColor);
+        //Draw bar
+        rect(currX, barY, barWidth, GAUGE_HEIGHT);
+        //Update x
+        currX += barWidth;
+    }
+
+    //Draw labels
+    fill("black");
+    textSize(GAUGE_TOP_FONT_SIZE);
+    textAlign(CENTER, BOTTOM);
+    text(DIFFICULTY_LABEL, GAUGE_X + (GAUGE_WIDTH / 2), barY - GAUGE_TOP_LABEL_BUFF);
+    textSize(GAUGE_BOTTOM_FONT_SIZE);
+    textAlign(CENTER, TOP);
+    text(EASY_LABEL, GAUGE_X, barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
+    text(HARD_LABEL, GAUGE_X + (GAUGE_WIDTH / 2), barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
+    text(OMG_LABEL, GAUGE_X + GAUGE_WIDTH, barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
 }
 
 /*
@@ -221,6 +271,9 @@ class Leg{
             maxH = Math.max(maxH, this.portions[i].end_elev * HEIGHT_MULT);
         }
         this.height = maxH;
+
+        //Set label display state
+        this.labelDisplayed = false;
     }
 
     /*
@@ -316,8 +369,8 @@ class Leg{
 }
 
 class Cloud{
-    constructor(img, x, y, width, height){
-        this.img = img;
+    constructor(x, y, width, height){
+        this.img = cloudImg;
         this.x = x;
         this.y = y;
         this.width = width;
