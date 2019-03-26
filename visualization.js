@@ -328,7 +328,7 @@ class Leg{
         
         //Change alpha if hovering
         if(this.mouseIsOver()){
-            fill(hue(fillColor), saturation(fillColor), brightness(fillColor), 0.6);
+            fill(hue(fillColor), saturation(fillColor) * 0.8, brightness(fillColor) * 0.8);
         }else{
             fill(fillColor);
         }
