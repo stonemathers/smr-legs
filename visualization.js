@@ -104,14 +104,6 @@ function draw(){
     }
     background(skyColor);
 
-    //Draw Title
-    /*
-    fill("black");
-    textAlign(CENTER, TOP);
-    textSize(TITLE_FONT_SIZE);
-    text(TITLE_MSG, windowWidth/2, TITLE_Y);
-    */
-
     //Move Legs and Clouds
     if(keyIsDown(LEFT_ARROW) && legs[0].x < MOUNT_BUFFER){
         for(let i = 0; i < legs.length; i++){
