@@ -1,6 +1,7 @@
 //Canvas constants
 const BG_COLOR = "#87CEEB";
 const TEXT_COLOR = "#152614";
+const SCROLL_SPEED = 20;
 
 //Ground constants
 let ground_height;
@@ -25,7 +26,6 @@ let maxDifficulty = 0;
 //Leg constants
 const WIDTH_MULT = 200;
 const HEIGHT_MULT = 0.12;
-const SCROLL_SPEED = 20;
 let MOUNT_BUFFER;
 
 //Leg Label
@@ -183,13 +183,24 @@ function mouseWheel(event){
     //Move Legs
     if((event.delta < 0 && legs[0].x < MOUNT_BUFFER) || 
         (event.delta > 0 && (legs[legs.length - 1].x + legs[legs.length - 1].legWidth) > (width - MOUNT_BUFFER))){
+        //Prevent scroll from going too far
+        let moveDist;
+        if(event.delta > 0){
+            moveDist = Math.min(event.delta, totalPixelWidth - width - currentPixelPosition);
+        }else{
+            moveDist = -Math.min(-event.delta, currentPixelPosition);
+        }
+
         for(let i = 0; i < legs.length; i++){
-            legs[i].move(-event.delta);
+            //legs[i].move(-event.delta);
+            legs[i].move(-moveDist);
         }
         for(let i = 0; i < clouds.length; i++){
-            clouds[i].move(-event.delta);
+            //clouds[i].move(-event.delta);
+            clouds[i].move(-moveDist);
         }
-        currentPixelPosition += event.delta;
+        //currentPixelPosition += event.delta;
+        currentPixelPosition += moveDist;
     }
 
     //Prevent page scrolling
