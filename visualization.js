@@ -3,6 +3,7 @@ const BG_COLOR = "#87CEEB";
 const TEXT_COLOR = "#152614";
 const KEY_SCROLL_SPEED = 15;
 const MAX_WHEEL_SCROLL_SPEED = 80;
+const SHAPE_STROKE_WEIGHT = 2;
 
 //Ground constants
 let ground_height;
@@ -22,6 +23,7 @@ const HARDEST_COLOR = "#FE0000";
 //Data vars
 let legData;
 let legs;
+let maxLegHeight = 0;
 let maxDifficulty = 0;
 
 //Leg constants
@@ -36,6 +38,7 @@ const MI_LABEL = " mi";
 const CLIMB_LABEL = "Total Climb: ";
 const FT_LABEL = " ft";
 const LABEL_FONT_SIZE = 24;
+const TEXT_STROKE_WEIGHT = 0;
 
 //Clouds
 let cloudImg;
@@ -65,6 +68,12 @@ const OMG_LABEL = "OMG";
 
 //Scroll Tracker
 const TRACKER_BUFF = 100;
+
+//Altitude Bar
+const ALT_BAR_X = 8;
+const ALT_BAR_ALPHA = 0.4;
+const BAR_STROKE_WEIGHT = 5;
+const ALT_BAR_TICK_WIDTH = 40;
 
 
 /*
@@ -158,6 +167,9 @@ function draw(){
 
     //Draw Scroll Tracker
     drawScrollTracker();
+
+    //Draw altitude bar
+    drawAltitudeBar();
 }
 
 /*
@@ -185,14 +197,11 @@ function mouseWheel(event){
         }
 
         for(let i = 0; i < legs.length; i++){
-            //legs[i].move(-event.delta);
             legs[i].move(-moveDist);
         }
         for(let i = 0; i < clouds.length; i++){
-            //clouds[i].move(-event.delta);
             clouds[i].move(-moveDist);
         }
-        //currentPixelPosition += event.delta;
         currentPixelPosition += moveDist;
     }
 
@@ -224,6 +233,9 @@ function initLegs(){
         //Update vars
         currX += legWidth;
         maxDifficulty = Math.max(maxDifficulty, diff);
+        for(let i = 0; i < ports.length; i++){
+            maxLegHeight = Math.max(ports[i].start_elev, ports[i].end_elev, maxLegHeight);
+        }
     }
 
     //Set total pixel width of visualization
@@ -245,6 +257,10 @@ function drawDifficultyGauge(){
     let barWidth = GAUGE_WIDTH / (maxDifficulty + 1);
     let barY = ground_height + GAUGE_Y_BUFF;
 
+    //Set stroke props
+    stroke(0, 0, 0);
+    strokeWeight(SHAPE_STROKE_WEIGHT);
+
     for(let i = 0; i <= maxDifficulty; i++){
         //Set color
         let fillColor = lerpColor(color(EASIEST_COLOR), color(HARDEST_COLOR), i/maxDifficulty);
@@ -256,7 +272,9 @@ function drawDifficultyGauge(){
     }
 
     //Draw labels
-    fill(TEXT_COLOR);
+    strokeWeight(TEXT_STROKE_WEIGHT);
+    //fill(TEXT_COLOR);
+    fill("black");
     textSize(GAUGE_TOP_FONT_SIZE);
     textAlign(CENTER, BOTTOM);
     text(DIFFICULTY_LABEL, GAUGE_X + (GAUGE_WIDTH / 2), barY - GAUGE_TOP_LABEL_BUFF);
@@ -277,6 +295,10 @@ function drawScrollTracker(){
     let prcntScrolled = currentPixelPosition / (totalPixelWidth - MOUNT_BUFFER - MOUNT_BUFFER);
     let scrolledWidth = trackerWidth * prcntScrolled;
 
+    //Set stroke props
+    stroke(0, 0, 0);
+    strokeWeight(SHAPE_STROKE_WEIGHT);
+
     //Draw tracker base
     fill("white");
     rect(trackerX, trackerY, trackerWidth, trackerHeight);
@@ -287,6 +309,41 @@ function drawScrollTracker(){
 
     //Draw divider
     
+}
+
+function drawAltitudeBar(){
+    //Set line stroke props
+    if(currentPixelPosition < MOUNT_BUFFER){
+        stroke(0, 0, 0, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+        fill(0, 0, 0, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+    }else{
+        stroke(0, 0, 0, ALT_BAR_ALPHA);
+        fill(0, 0, 0, ALT_BAR_ALPHA);
+    }
+    strokeWeight(BAR_STROKE_WEIGHT);
+
+    //Calc max height and display height
+    let maxDisplayHeight = (int(maxLegHeight / 1000) + 1) * 1000;
+    let baseHeight = maxDisplayHeight * HEIGHT_MULT;
+
+    //Draw lines
+    rect(ALT_BAR_X, ground_height, 0, -baseHeight);
+
+    strokeWeight(BAR_STROKE_WEIGHT / 2);
+    for(let i = 1000; i <= maxDisplayHeight; i += 1000){
+        rect(ALT_BAR_X + 3, (i * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH, 0);
+        rect(ALT_BAR_X + 3, ((i + 250) * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH / 2, 0);
+        rect(ALT_BAR_X + 3, ((i + 500) * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH / 2, 0);
+        rect(ALT_BAR_X + 3, ((i + 750) * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH / 2, 0);
+    }
+
+    //Set text stroke props
+    strokeWeight(TEXT_STROKE_WEIGHT);
+
+    //Draw text
+    textAlign(LEFT, BOTTOM);
+    text(str(maxDisplayHeight), ALT_BAR_X, ground_height - baseHeight);
+
 }
 
 /*
@@ -326,6 +383,10 @@ class Leg{
             fill(fillColor);
         }
 
+        //Set stroke props
+        stroke(0, 0, 0);
+        strokeWeight(SHAPE_STROKE_WEIGHT);
+
         //Draw shape
         beginShape();
         vertex(this.x, ground_height);  //bottom left
@@ -361,6 +422,8 @@ class Leg{
         let infoY = ground_height - (this.height/3);
 
         //Draw text
+        stroke(0, 0, 0);
+        strokeWeight(TEXT_STROKE_WEIGHT);
         textAlign(CENTER, CENTER);
         textSize(LABEL_FONT_SIZE);
         fill(TEXT_COLOR);
@@ -398,7 +461,6 @@ class Leg{
 
 class Cloud{
     constructor(x, y, width, height){
-        this.img = cloudImg;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -406,7 +468,7 @@ class Cloud{
     }
 
     display(){
-        image(this.img, this.x, this.y, this.width, this.height);
+        image(cloudImg, this.x, this.y, this.width, this.height);
     }
 
     move(dx){
