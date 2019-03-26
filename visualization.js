@@ -1,7 +1,8 @@
 //Canvas constants
 const BG_COLOR = "#87CEEB";
 const TEXT_COLOR = "#152614";
-const SCROLL_SPEED = 20;
+const KEY_SCROLL_SPEED = 15;
+const MAX_WHEEL_SCROLL_SPEED = 80;
 
 //Ground constants
 let ground_height;
@@ -41,7 +42,7 @@ let cloudImg;
 let clouds = [];
 const CLOUD_Y_MAX = 300;
 const CLOUD_SPACING_MIN = 100;
-const CLOUD_SPACING_MAX = 300;
+const CLOUD_SPACING_MAX = 400;
 const CLOUD_SIZE_DIV_FACTOR = 12;
 
 //Positioning
@@ -114,21 +115,21 @@ function draw(){
     //Move Legs and Clouds
     if(keyIsDown(LEFT_ARROW) && legs[0].x < MOUNT_BUFFER){
         for(let i = 0; i < legs.length; i++){
-            legs[i].move(SCROLL_SPEED);
+            legs[i].move(KEY_SCROLL_SPEED);
         }
         for(let i = 0; i < clouds.length; i++){
-            clouds[i].move(SCROLL_SPEED);
+            clouds[i].move(KEY_SCROLL_SPEED);
         }
-        currentPixelPosition -= SCROLL_SPEED;
+        currentPixelPosition -= KEY_SCROLL_SPEED;
     }else if(keyIsDown(RIGHT_ARROW) &&
         (legs[legs.length - 1].x + legs[legs.length - 1].legWidth) > (width - MOUNT_BUFFER)){
         for(let i = 0; i < legs.length; i++){
-            legs[i].move(-SCROLL_SPEED);
+            legs[i].move(-KEY_SCROLL_SPEED);
         }
         for(let i = 0; i < clouds.length; i++){
-            clouds[i].move(-SCROLL_SPEED);
+            clouds[i].move(-KEY_SCROLL_SPEED);
         }
-        currentPixelPosition += SCROLL_SPEED;
+        currentPixelPosition += KEY_SCROLL_SPEED;
     }
 
     //Draw every other cloud - some end up in front of legs and some behind
@@ -183,12 +184,12 @@ function mouseWheel(event){
     //Move Legs
     if((event.delta < 0 && legs[0].x < MOUNT_BUFFER) || 
         (event.delta > 0 && (legs[legs.length - 1].x + legs[legs.length - 1].legWidth) > (width - MOUNT_BUFFER))){
-        //Prevent scroll from going too far
+        //Prevent scroll from going too far or too fast
         let moveDist;
         if(event.delta > 0){
-            moveDist = Math.min(event.delta, totalPixelWidth - width - currentPixelPosition);
+            moveDist = Math.min(MAX_WHEEL_SCROLL_SPEED, event.delta, totalPixelWidth - width - currentPixelPosition);
         }else{
-            moveDist = -Math.min(-event.delta, currentPixelPosition);
+            moveDist = -Math.min(MAX_WHEEL_SCROLL_SPEED, -event.delta, currentPixelPosition);
         }
 
         for(let i = 0; i < legs.length; i++){
