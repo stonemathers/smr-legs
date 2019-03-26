@@ -62,6 +62,9 @@ const EASY_LABEL = "Easy";
 const HARD_LABEL = "Hard";
 const OMG_LABEL = "OMG";
 
+//Scroll Tracker
+const TRACKER_BUFF = 100;
+
 
 /*
 * Run once before site loads
@@ -159,6 +162,9 @@ function draw(){
     //Draw Difficulty Gauge
     colorMode(HSB);
     drawDifficultyGauge();
+
+    //Draw Scroll Tracker
+    drawScrollTracker();
 }
 
 /*
@@ -257,6 +263,26 @@ function drawDifficultyGauge(){
     text(HARD_LABEL, GAUGE_X + (GAUGE_WIDTH / 2), barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
     textAlign(RIGHT, TOP);
     text(OMG_LABEL, GAUGE_X + GAUGE_WIDTH, barY + GAUGE_HEIGHT + GAUGE_BOTTOM_LABEL_BUFF);
+}
+
+function drawScrollTracker(){
+    let trackerX = GAUGE_X + GAUGE_WIDTH + TRACKER_BUFF;
+    let trackerY = ground_height + TRACKER_BUFF;
+    let trackerWidth = width - trackerX - TRACKER_BUFF;
+    let trackerHeight = height - TRACKER_BUFF - trackerY;
+    let prcntScrolled = currentPixelPosition / (totalPixelWidth - MOUNT_BUFFER - MOUNT_BUFFER);
+    let scrolledWidth = trackerWidth * prcntScrolled;
+
+    //Draw tracker base
+    fill("white");
+    rect(trackerX, trackerY, trackerWidth, trackerHeight);
+
+    //Draw scrolled portion
+    fill("black");
+    rect(trackerX, trackerY, scrolledWidth, trackerHeight);
+
+    //Draw divider
+    
 }
 
 /*
