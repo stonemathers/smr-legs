@@ -25,7 +25,7 @@ let maxDifficulty = 0;
 const WIDTH_MULT = 200;
 const HEIGHT_MULT = 0.12;
 const SCROLL_SPEED = 20;
-const MOUNT_BUFFER = 300;
+let MOUNT_BUFFER;
 
 //Leg label strings
 const LEG_LABEL = "Leg #";
@@ -78,6 +78,7 @@ function preload(){
 */
 function setup(){
     createCanvas(windowWidth, windowHeight);
+    MOUNT_BUFFER = width / 2;
     initLegs();
     initClouds();
     ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
@@ -167,6 +168,7 @@ function draw(){
 */
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
+    MOUNT_BUFFER = width / 2;
     ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
 }
 
