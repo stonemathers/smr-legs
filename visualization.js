@@ -84,6 +84,13 @@ const ALT_BAR_ALPHA = 0.4;
 const BAR_STROKE_WEIGHT = 5;
 const ALT_BAR_TICK_WIDTH = 40;
 
+//Distance Bar
+const DIST_BAR_Y_BUFF = 5;
+const DIST_BAR_HEIGHT = 5;
+const DIST_BAR_TICK_HEIGHT = 40;
+const DIST_BAR_TICK_WIDTH = 5;
+let distBar;
+
 
 /*
 * Run once before site loads
@@ -98,10 +105,13 @@ function preload(){
 */
 function setup(){
     createCanvas(windowWidth, windowHeight);
+
     MOUNT_BUFFER = width / 2;
+    ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
+
     initLegs();
     initClouds();
-    ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
+    initDistanceBar();
 }
 
 /*
@@ -129,6 +139,7 @@ function draw(){
         for(let i = 0; i < clouds.length; i++){
             clouds[i].move(KEY_SCROLL_SPEED);
         }
+        distBar.move(KEY_SCROLL_SPEED);
         currentPixelPosition -= KEY_SCROLL_SPEED;
     }else if(keyIsDown(RIGHT_ARROW) &&
         (legs[legs.length - 1].x + legs[legs.length - 1].legWidth) > (width - MOUNT_BUFFER)){
@@ -138,6 +149,7 @@ function draw(){
         for(let i = 0; i < clouds.length; i++){
             clouds[i].move(-KEY_SCROLL_SPEED);
         }
+        distBar.move(-KEY_SCROLL_SPEED);
         currentPixelPosition += KEY_SCROLL_SPEED;
     }
 
@@ -164,13 +176,11 @@ function draw(){
     }
 
     //Draw Ground
-    colorMode(RGB);
     fill(GROUND_COLOR);
     noTint();
     rect(0, ground_height, width, height - ground_height);
 
     //Draw Difficulty Gauge
-    colorMode(HSB);
     drawDifficultyGauge();
 
     //Draw Scroll Tracker
@@ -178,6 +188,12 @@ function draw(){
 
     //Draw altitude bar
     drawAltitudeBar();
+
+    //Draw distance bar
+    distBar.display();
+
+    //Draw start/finish banners
+    drawBanners();
 }
 
 /*
@@ -210,6 +226,7 @@ function mouseWheel(event){
         for(let i = 0; i < clouds.length; i++){
             clouds[i].move(-moveDist);
         }
+        distBar.move(-moveDist);
         currentPixelPosition += moveDist;
     }
 
@@ -258,6 +275,16 @@ function initClouds(){
         let y = random(0, CLOUD_Y_MAX);
         clouds.push(new Cloud(currX, y, cloudImg.width / CLOUD_SIZE_DIV_FACTOR, cloudImg.height / CLOUD_SIZE_DIV_FACTOR));
     }
+}
+
+function initDistanceBar(){
+    let totalDist = 0;
+
+    for(let i = 0; i < legData.leg_list.length; i++){
+        totalDist += float(legData.leg_list[i].dist);
+    }
+
+    distBar = new DistanceBar(MOUNT_BUFFER, ground_height + DIST_BAR_Y_BUFF, totalDist);
 }
 
 function drawDifficultyGauge(){
@@ -361,6 +388,10 @@ function drawAltitudeBar(){
     //Draw text
     textAlign(LEFT, BOTTOM);
     text(str(maxDisplayHeight), ALT_BAR_X, ground_height - baseHeight);
+
+}
+
+function drawBanners(){
 
 }
 
@@ -513,5 +544,54 @@ class Cloud{
 
     isOnScreen(){
         return this.x > -this.width  && this.x < width;
+    }
+}
+
+class DistanceBar{
+    /*
+    * distance - distance the bar is representing in miles
+    */
+    constructor(x, y, distance){
+        this.x = x;
+        this.y = y;
+        this.distance = distance;
+    }
+
+    display(){
+        //Base
+        fill(0, 0, 0);
+        rect(this.x, this.y, this.distance * WIDTH_MULT, DIST_BAR_HEIGHT);
+
+        //First tick
+        rect(this.x, this.y, DIST_BAR_TICK_WIDTH, -DIST_BAR_TICK_HEIGHT);
+
+        //Middle ticks
+        for(let i = 1; i < this.distance; i++){
+            let mainX = this.x + (i * WIDTH_MULT);
+            rect(mainX, this.y, DIST_BAR_TICK_WIDTH, -DIST_BAR_TICK_HEIGHT);
+            rect(mainX - (WIDTH_MULT * 0.25), this.y, DIST_BAR_TICK_WIDTH / 2, -(DIST_BAR_TICK_HEIGHT / 2));
+            rect(mainX - (WIDTH_MULT * 0.5), this.y, DIST_BAR_TICK_WIDTH / 2, -(DIST_BAR_TICK_HEIGHT / 2));
+            rect(mainX - (WIDTH_MULT * 0.75), this.y, DIST_BAR_TICK_WIDTH / 2, -(DIST_BAR_TICK_HEIGHT / 2));
+        }
+
+        //Last ticks
+        let currDist = Math.floor(this.distance) + 0.25;
+        while(currDist < this.distance){
+            rect(this.x + (currDist * WIDTH_MULT), this.y, DIST_BAR_TICK_WIDTH / 2, -(DIST_BAR_TICK_HEIGHT / 2));
+            currDist += 0.25;
+        }
+        rect(this.x + this.distance * WIDTH_MULT, this.y, -DIST_BAR_TICK_WIDTH, -DIST_BAR_TICK_HEIGHT);
+
+        //Text
+        textAlign(CENTER, TOP);
+        for(let i = 0; i < this.distance; i += 5){
+            text(str(i) + " mi", this.x + (i * WIDTH_MULT), this.y + 10);
+        }
+        text(str(this.distance) + " mi", this.x + (this.distance * WIDTH_MULT), this.y + 10);
+
+    }
+
+    move(dx){
+        this.x += dx;
     }
 }
