@@ -28,10 +28,17 @@ let legs;
 let maxLegHeight = 0;
 let maxDifficulty = 0;
 
-//Leg constants
+//Legs
 const WIDTH_MULT = 200;
 const HEIGHT_MULT = 0.12;
 let MOUNT_BUFFER;
+
+//Flag
+const FLAG_POLE_HEIGHT = 100;
+const FLAG_POLE_WIDTH = 4;
+const FLAG_WIDTH = 50;
+const FLAG_HEIGHT = 50;
+const FLAG_FONT_SIZE = 30;
 
 //Leg Label
 const LEG_LABEL = "Leg #";
@@ -384,8 +391,30 @@ class Leg{
     * Display Leg
     */
     display(){
-        //Set color
+        //Draw flag
+        //Set stroke props
+        if(brightness(skyColor) < SKY_BRIGHTNESS_THRESH){
+            stroke(0, 0, 100);
+        }else{
+            stroke(0, 0, 0);
+        }
+        strokeWeight(1);
+        //Draw flag
+        let bottomY = ground_height - (this.portions[0].start_elev * HEIGHT_MULT);
+        fill(0, 0, 100);
+        rect(this.x, bottomY - FLAG_POLE_HEIGHT, FLAG_WIDTH, FLAG_HEIGHT);
+        //Draw pole
+        fill(0, 0, 0);
+        rect(this.x, bottomY, FLAG_POLE_WIDTH, -FLAG_POLE_HEIGHT);
+        //Draw text
+        textAlign(CENTER, CENTER);
+        textSize(FLAG_FONT_SIZE);
+        text(str(this.legNum + 1), this.x + (FLAG_WIDTH / 2), bottomY - FLAG_POLE_HEIGHT + (FLAG_HEIGHT / 2));
+
+        //Set color and stroke
         let fillColor = lerpColor(color(EASIEST_COLOR), color(HARDEST_COLOR), this.difficulty/maxDifficulty);
+        stroke(0, 0, 0);
+        strokeWeight(SHAPE_STROKE_WEIGHT);
         
         //Change alpha if hovering
         if(this.mouseIsOver()){
@@ -393,10 +422,6 @@ class Leg{
         }else{
             fill(fillColor);
         }
-
-        //Set stroke props
-        stroke(0, 0, 0);
-        strokeWeight(SHAPE_STROKE_WEIGHT);
 
         //Draw shape
         beginShape();
