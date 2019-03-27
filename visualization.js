@@ -4,6 +4,8 @@ const TEXT_COLOR = "#152614";
 const KEY_SCROLL_SPEED = 15;
 const MAX_WHEEL_SCROLL_SPEED = 80;
 const SHAPE_STROKE_WEIGHT = 2;
+const SKY_BRIGHTNESS_THRESH = 25;
+let skyColor;
 
 //Ground constants
 let ground_height;
@@ -101,7 +103,6 @@ function setup(){
 function draw(){
     //Draw Sky
     colorMode(RGB);
-    let skyColor;
     if(currentPixelPosition < totalPixelWidth / 6){
         skyColor = BG_COLOR;
     }else if(currentPixelPosition < totalPixelWidth * 1 / 3){
@@ -312,13 +313,23 @@ function drawScrollTracker(){
 }
 
 function drawAltitudeBar(){
-    //Set line stroke props
+    //Set stroke and fill props
     if(currentPixelPosition < MOUNT_BUFFER){
-        stroke(0, 0, 0, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
-        fill(0, 0, 0, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+        if(brightness(skyColor) < SKY_BRIGHTNESS_THRESH){
+            stroke(0, 0, 100, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+            fill(0, 0, 100, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+        }else{
+            stroke(0, 0, 0, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+            fill(0, 0, 0, 1 - ((currentPixelPosition / MOUNT_BUFFER) * (1 - ALT_BAR_ALPHA)));
+        }
     }else{
-        stroke(0, 0, 0, ALT_BAR_ALPHA);
-        fill(0, 0, 0, ALT_BAR_ALPHA);
+        if(brightness(skyColor) < SKY_BRIGHTNESS_THRESH){
+            stroke(0, 0, 100, ALT_BAR_ALPHA);
+            fill(0, 0, 100, ALT_BAR_ALPHA);
+        }else{
+            stroke(0, 0, 0, ALT_BAR_ALPHA);
+            fill(0, 0, 0, ALT_BAR_ALPHA);
+        }
     }
     strokeWeight(BAR_STROKE_WEIGHT);
 
@@ -331,10 +342,10 @@ function drawAltitudeBar(){
 
     strokeWeight(BAR_STROKE_WEIGHT / 2);
     for(let i = 1000; i <= maxDisplayHeight; i += 1000){
-        rect(ALT_BAR_X + 3, (i * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH, 0);
-        rect(ALT_BAR_X + 3, ((i + 250) * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH / 2, 0);
-        rect(ALT_BAR_X + 3, ((i + 500) * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH / 2, 0);
-        rect(ALT_BAR_X + 3, ((i + 750) * HEIGHT_MULT) - 4, ALT_BAR_TICK_WIDTH / 2, 0);
+        rect(ALT_BAR_X + 3, ground_height - (i * HEIGHT_MULT) + 2, ALT_BAR_TICK_WIDTH, 0);
+        rect(ALT_BAR_X + 3, ground_height - ((i - 250) * HEIGHT_MULT) + 2, ALT_BAR_TICK_WIDTH / 2, 0);
+        rect(ALT_BAR_X + 3, ground_height - ((i - 500) * HEIGHT_MULT) + 2, ALT_BAR_TICK_WIDTH / 2, 0);
+        rect(ALT_BAR_X + 3, ground_height - ((i - 750) * HEIGHT_MULT) + 2, ALT_BAR_TICK_WIDTH / 2, 0);
     }
 
     //Set text stroke props
