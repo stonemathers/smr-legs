@@ -76,7 +76,8 @@ const HARD_LABEL = "Hard";
 const OMG_LABEL = "OMG";
 
 //Scroll Tracker
-const TRACKER_BUFF = 100;
+const TRACKER_BUFF = GAUGE_Y_BUFF;
+const TRACKER_HEIGHT = GAUGE_HEIGHT;
 
 //Altitude Bar
 const ALT_BAR_X = 8;
@@ -348,7 +349,6 @@ function drawScrollTracker(){
     let trackerX = GAUGE_X + GAUGE_WIDTH + TRACKER_BUFF;
     let trackerY = ground_height + TRACKER_BUFF;
     let trackerWidth = width - trackerX - TRACKER_BUFF;
-    let trackerHeight = height - TRACKER_BUFF - trackerY;
     let prcntScrolled = currentPixelPosition / (totalPixelWidth - MOUNT_BUFFER - MOUNT_BUFFER);
     let scrolledWidth = trackerWidth * prcntScrolled;
 
@@ -358,11 +358,11 @@ function drawScrollTracker(){
 
     //Draw tracker base
     fill("white");
-    rect(trackerX, trackerY, trackerWidth, trackerHeight);
+    rect(trackerX, trackerY, trackerWidth, TRACKER_HEIGHT);
 
     //Draw scrolled portion
     fill("black");
-    rect(trackerX, trackerY, scrolledWidth, trackerHeight);
+    rect(trackerX, trackerY, scrolledWidth, TRACKER_HEIGHT);
 
     //Draw divider
     
