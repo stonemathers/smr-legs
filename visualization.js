@@ -91,6 +91,16 @@ const DIST_BAR_TICK_HEIGHT = 40;
 const DIST_BAR_TICK_WIDTH = 5;
 let distBar;
 
+//Banners
+const BANNER_WIDTH = 600;
+const BANNER_HEIGHT = 100;
+const BANNER_POLE_HEIGHT = 150;
+const BANNER_POLE_WIDTH = 4;
+const START_TEXT = "SMOKY MOUNTAIN RELAY 2019";
+const FINISH_TEXT = "FINISH";
+const BANNER_FONT_SIZE = 36;
+let startBannerX;
+let finishBannerX;
 
 /*
 * Run once before site loads
@@ -112,6 +122,7 @@ function setup(){
     initLegs();
     initClouds();
     initDistanceBar();
+    initBanners();
 }
 
 /*
@@ -131,7 +142,7 @@ function draw(){
     }
     background(skyColor);
 
-    //Move Legs and Clouds
+    //Move Legs, Clouds, Distance Bar, and Banners
     if(keyIsDown(LEFT_ARROW) && legs[0].x < MOUNT_BUFFER){
         for(let i = 0; i < legs.length; i++){
             legs[i].move(KEY_SCROLL_SPEED);
@@ -140,6 +151,8 @@ function draw(){
             clouds[i].move(KEY_SCROLL_SPEED);
         }
         distBar.move(KEY_SCROLL_SPEED);
+        startBannerX += KEY_SCROLL_SPEED;
+        finishBannerX += KEY_SCROLL_SPEED;
         currentPixelPosition -= KEY_SCROLL_SPEED;
     }else if(keyIsDown(RIGHT_ARROW) &&
         (legs[legs.length - 1].x + legs[legs.length - 1].legWidth) > (width - MOUNT_BUFFER)){
@@ -150,6 +163,8 @@ function draw(){
             clouds[i].move(-KEY_SCROLL_SPEED);
         }
         distBar.move(-KEY_SCROLL_SPEED);
+        startBannerX -= KEY_SCROLL_SPEED;
+        finishBannerX -= KEY_SCROLL_SPEED;
         currentPixelPosition += KEY_SCROLL_SPEED;
     }
 
@@ -227,6 +242,8 @@ function mouseWheel(event){
             clouds[i].move(-moveDist);
         }
         distBar.move(-moveDist);
+        startBannerX -= moveDist;
+        finishBannerX -= moveDist;
         currentPixelPosition += moveDist;
     }
 
@@ -285,6 +302,11 @@ function initDistanceBar(){
     }
 
     distBar = new DistanceBar(MOUNT_BUFFER, ground_height + DIST_BAR_Y_BUFF, totalDist);
+}
+
+function initBanners(){
+    startBannerX = (MOUNT_BUFFER - BANNER_WIDTH) / 2;
+    finishBannerX = totalPixelWidth - MOUNT_BUFFER + startBannerX;
 }
 
 function drawDifficultyGauge(){
@@ -392,7 +414,30 @@ function drawAltitudeBar(){
 }
 
 function drawBanners(){
+    //Start Banner
+    stroke(0, 0, 0);
+    strokeWeight(2);
+    fill(0, 0, 0);
+    rect(startBannerX, ground_height, BANNER_POLE_WIDTH, -BANNER_POLE_HEIGHT);
+    rect(startBannerX + BANNER_WIDTH - BANNER_POLE_WIDTH, ground_height, BANNER_POLE_WIDTH, -BANNER_POLE_HEIGHT);
+    fill(0, 0, 100);
+    rect(startBannerX, ground_height - BANNER_POLE_HEIGHT, BANNER_WIDTH, -BANNER_HEIGHT);
+    fill(0, 0, 0);
+    strokeWeight(0);
+    textAlign(CENTER, CENTER);
+    textSize(BANNER_FONT_SIZE);
+    text(START_TEXT, startBannerX + (BANNER_WIDTH / 2), ground_height - BANNER_POLE_HEIGHT - (BANNER_HEIGHT / 2));
 
+    //Finish Banner
+    strokeWeight(2);
+    fill(0, 0, 0);
+    rect(finishBannerX, ground_height, BANNER_POLE_WIDTH, -BANNER_POLE_HEIGHT);
+    rect(finishBannerX + BANNER_WIDTH - BANNER_POLE_WIDTH, ground_height, BANNER_POLE_WIDTH, -BANNER_POLE_HEIGHT);
+    fill(0, 0, 100);
+    rect(finishBannerX, ground_height - BANNER_POLE_HEIGHT, BANNER_WIDTH, -BANNER_HEIGHT);
+    fill(0, 0, 0);
+    strokeWeight(0);
+    text(FINISH_TEXT, finishBannerX + (BANNER_WIDTH / 2), ground_height - BANNER_POLE_HEIGHT - (BANNER_HEIGHT / 2));
 }
 
 /*
