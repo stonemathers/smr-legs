@@ -86,7 +86,6 @@ const BAR_STROKE_WEIGHT = 5;
 const ALT_BAR_TICK_WIDTH = 40;
 
 //Distance Bar
-const DIST_BAR_Y_BUFF = 0;
 const DIST_BAR_HEIGHT = 5;
 const DIST_BAR_TICK_HEIGHT = 40;
 const DIST_BAR_TICK_WIDTH = 5;
@@ -219,6 +218,7 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     MOUNT_BUFFER = width / 2;
     ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
+    distBar = new DistanceBar(distBar.x, ground_height, distBar.distance);
 }
 
 /*
@@ -302,7 +302,7 @@ function initDistanceBar(){
         totalDist += float(legData.leg_list[i].dist);
     }
 
-    distBar = new DistanceBar(MOUNT_BUFFER, ground_height + DIST_BAR_Y_BUFF, totalDist);
+    distBar = new DistanceBar(MOUNT_BUFFER, ground_height, totalDist);
 }
 
 function initBanners(){
