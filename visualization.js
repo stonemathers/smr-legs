@@ -85,7 +85,7 @@ const BAR_STROKE_WEIGHT = 5;
 const ALT_BAR_TICK_WIDTH = 40;
 
 //Distance Bar
-const DIST_BAR_Y_BUFF = 5;
+const DIST_BAR_Y_BUFF = 0;
 const DIST_BAR_HEIGHT = 5;
 const DIST_BAR_TICK_HEIGHT = 40;
 const DIST_BAR_TICK_WIDTH = 5;
@@ -493,11 +493,13 @@ class Leg{
         strokeWeight(SHAPE_STROKE_WEIGHT);
         
         //Change alpha if hovering
+        /*
         if(this.mouseIsOver()){
             fill(hue(fillColor), saturation(fillColor) * 0.8, brightness(fillColor) * 0.8);
         }else{
+            */
             fill(fillColor);
-        }
+        //}
 
         //Draw shape
         beginShape();
@@ -510,9 +512,11 @@ class Leg{
         endShape(CLOSE);
 
         //Draw label
+        /*
         if(this.mouseIsOver()){
             this.drawLabel();
         }
+        */
     }
 
     /*
