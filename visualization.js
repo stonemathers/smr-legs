@@ -7,6 +7,9 @@ const SHAPE_STROKE_WEIGHT = 2;
 const SKY_BRIGHTNESS_THRESH = 25;
 let skyColor;
 
+//Fonts
+let bannerFont;
+
 //Ground constants
 let ground_height;
 const GROUND_BUFF = 250;
@@ -36,7 +39,7 @@ let MOUNT_BUFFER;
 //Flag
 const FLAG_POLE_HEIGHT = 100;
 const FLAG_POLE_WIDTH = 4;
-const FLAG_WIDTH = 50;
+const FLAG_WIDTH = 70;
 const FLAG_HEIGHT = 50;
 const FLAG_FONT_SIZE = 30;
 
@@ -108,6 +111,7 @@ let finishBannerX;
 function preload(){
     legData = loadJSON("assets/json/legs.json");
     cloudImg = loadImage("assets/images/cloud.png");
+    bannerFont = loadFont("assets/fonts/Permanent_Marker/PermanentMarker-Regular.ttf");
 }
 
 /*
@@ -118,6 +122,7 @@ function setup(){
 
     MOUNT_BUFFER = width / 2;
     ground_height = Math.max(height - GROUND_BUFF, MIN_GROUND_HEIGHT);
+    textFont(bannerFont);
 
     initLegs();
     initClouds();
@@ -426,7 +431,7 @@ function drawBanners(){
     strokeWeight(0);
     textAlign(CENTER, CENTER);
     textSize(BANNER_FONT_SIZE);
-    text(START_TEXT, startBannerX + (BANNER_WIDTH / 2), ground_height - BANNER_POLE_HEIGHT - (BANNER_HEIGHT / 2));
+    text(START_TEXT, startBannerX + (BANNER_WIDTH / 2), ground_height - BANNER_POLE_HEIGHT - (BANNER_HEIGHT / 2) - 5);
 
     //Finish Banner
     strokeWeight(2);
@@ -437,7 +442,7 @@ function drawBanners(){
     rect(finishBannerX, ground_height - BANNER_POLE_HEIGHT, BANNER_WIDTH, -BANNER_HEIGHT);
     fill(0, 0, 0);
     strokeWeight(0);
-    text(FINISH_TEXT, finishBannerX + (BANNER_WIDTH / 2), ground_height - BANNER_POLE_HEIGHT - (BANNER_HEIGHT / 2));
+    text(FINISH_TEXT, finishBannerX + (BANNER_WIDTH / 2), ground_height - BANNER_POLE_HEIGHT - (BANNER_HEIGHT / 2) - 5);
 }
 
 /*
@@ -485,7 +490,7 @@ class Leg{
         //Draw text
         textAlign(CENTER, CENTER);
         textSize(FLAG_FONT_SIZE);
-        text(str(this.legNum + 1), this.x + (FLAG_WIDTH / 2), bottomY - FLAG_POLE_HEIGHT + (FLAG_HEIGHT / 2));
+        text(str(this.legNum + 1), this.x + (FLAG_WIDTH / 2), bottomY - FLAG_POLE_HEIGHT + (FLAG_HEIGHT / 2) - 5);
 
         //Set color and stroke
         let fillColor = lerpColor(color(EASIEST_COLOR), color(HARDEST_COLOR), this.difficulty/maxDifficulty);
