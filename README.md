@@ -10,3 +10,5 @@ The user can either use the left and right arrow keys or scroll up and down to t
 ![Visualization Middle](assets/images/race-middle.png "Visualization Middle")
 
 ![Visualization End](assets/images/race-end.png "Visualization End")
+
+[Explore this visualization!](https://stonemathers.github.io/smr-legs/)
